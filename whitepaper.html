@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClawVision — Real-Time World Index: Technical Overview</title>
+  <meta name="description" content="Technical overview of ClawVision's Real-Time World Index architecture and key operating metrics." />
+
+  <link rel="stylesheet" href="https://unpkg.com/@fontsource/inter@5.0.20/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/@fontsource/jetbrains-mono@5.0.20/index.css">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page page--whitepaper">
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="ClawVision Home">
+        <span aria-hidden="true">
+          <img src="assets/logo.svg" alt="" style="width:30px;height:30px;" />
+        </span>
+        <span>ClawVision</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="map.html">Map</a>
+        <a href="api.html">API Docs</a>
+        <a class="active" href="blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="blog-hero">
+      <div class="container">
+        <div class="badge">Whitepaper Summary</div>
+        <h1>Real-Time World Index: Technical Overview</h1>
+        <p class="section-sub">A concise look at RTWI architecture, data flow, and query primitives.</p>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container">
+        <div class="article-shell">
+          <p>Real-Time World Index (RTWI) is a distributed sensing and indexing system designed to represent physical-world change as a live, queryable stream. Edge devices capture multimodal observations continuously, attach trusted time and location metadata, and stream events into a normalization layer. The result is not a static map artifact but a rolling state model of what is happening across space and time.</p>
+
+          <p>At ingestion, RTWI validates payload structure, deduplicates near-identical events, and binds records to H3 cells to create spatially stable addressability. H3 res-9 provides a practical balance between locality and scale, allowing downstream systems to aggregate and drill down without custom geospatial infrastructure per application. Storage is optimized for temporal access patterns so recency-first queries remain fast under continuous write load.</p>
+
+          <p>On top of this index, <code>world.query()</code> exposes a simple API contract for developers and operators. Instead of pulling raw files, clients request world-state primitives by cell, interval, and modality. This query layer is built for low-latency operational use cases and agent workflows where fresh physical context is required to decide, route, and coordinate in the real world.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container">
+        <div class="kicker">Key Metrics</div>
+        <h2 class="section-title">Current operating envelope</h2>
+        <div class="metric-grid" style="margin-top:14px;">
+          <div class="card metric-card">
+            <div class="metric-value">30K</div>
+            <div class="metric-label">Active devices</div>
+          </div>
+          <div class="card metric-card">
+            <div class="metric-value">1fps</div>
+            <div class="metric-label">Capture cadence</div>
+          </div>
+          <div class="card metric-card">
+            <div class="metric-value">H3 res-9</div>
+            <div class="metric-label">Spatial indexing</div>
+          </div>
+          <div class="card metric-card">
+            <div class="metric-value">world.query()</div>
+            <div class="metric-label">Developer API primitive</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container">
+        <div class="kicker">Architecture</div>
+        <h2 class="section-title">Capture to query pipeline</h2>
+        <div class="card" style="margin-top:14px; overflow:hidden;">
+          <svg viewBox="0 0 1100 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RTWI architecture flow">
+            <defs>
+              <linearGradient id="flow" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#00e5ff" />
+                <stop offset="1" stop-color="#00ff88" />
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="1100" height="220" fill="rgba(0,0,0,0.0)"/>
+            <g font-family="Inter, sans-serif" font-size="14" fill="rgba(255,255,255,0.86)">
+              <g>
+                <rect x="40" y="56" width="230" height="108" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+                <text x="70" y="98" font-weight="800">Phone Fleet</text>
+                <text x="70" y="122" fill="rgba(255,255,255,0.66)">30K+ devices</text>
+              </g>
+              <g>
+                <rect x="320" y="56" width="230" height="108" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+                <text x="350" y="98" font-weight="800">1 FPS Capture</text>
+                <text x="350" y="122" fill="rgba(255,255,255,0.66)">frames + GPS + transcript</text>
+              </g>
+              <g>
+                <rect x="600" y="56" width="230" height="108" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+                <text x="630" y="98" font-weight="800">H3 Indexing</text>
+                <text x="630" y="122" fill="rgba(255,255,255,0.66)">~100m spatial cells</text>
+              </g>
+              <g>
+                <rect x="880" y="56" width="230" height="108" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+                <text x="910" y="98" font-weight="800">world.query()</text>
+                <text x="910" y="122" fill="rgba(255,255,255,0.66)">cells, events, frames</text>
+              </g>
+            </g>
+            <g stroke="url(#flow)" stroke-width="3" fill="none" opacity="0.9">
+              <path d="M270 110 C300 110, 295 110, 320 110" />
+              <path d="M550 110 C580 110, 575 110, 600 110" />
+              <path d="M830 110 C860 110, 855 110, 880 110" />
+            </g>
+            <g fill="url(#flow)">
+              <circle cx="320" cy="110" r="4"/>
+              <circle cx="600" cy="110" r="4"/>
+              <circle cx="880" cy="110" r="4"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container">
+        <div class="card emph article-actions">
+          <div>
+            <div class="kicker">Roadmap</div>
+            <h2 class="section-title" style="margin-top:10px;">Full whitepaper coming Q2 2026</h2>
+            <p class="section-sub">Get notified when the full technical document is published.</p>
+          </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a class="btn primary" href="mailto:research@clawvision.org?subject=RTWI%20whitepaper%20updates">Email signup placeholder</a>
+            <a class="btn ghost" href="mailto:partnerships@clawvision.org">Talk to us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img src="assets/logo.svg" alt="ClawVision logo" style="width:34px; height:34px;" />
+          <div style="font-weight:900;">ClawVision Research</div>
+        </div>
+        <div style="margin-top:10px; color: rgba(255,255,255,0.66);">
+          Live world indexing primitives for developers and partners.
+        </div>
+      </div>
+      <div class="footer-links" aria-label="Footer links">
+        <a href="index.html">Home</a>
+        <a href="map.html">Live Map</a>
+        <a href="api.html">API Docs</a>
+        <a href="blog.html">Blog</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

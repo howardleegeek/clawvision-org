@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClawVision — Live Coverage Map</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/@fontsource/inter@5.0.20/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/@fontsource/jetbrains-mono@5.0.20/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* Leaflet tweaks (dark UI) */
+    .leaflet-control-attribution {
+      background: rgba(0,0,0,0.35) !important;
+      color: rgba(255,255,255,0.68) !important;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 10px;
+      padding: 4px 8px;
+      margin: 10px;
+      backdrop-filter: blur(12px);
+    }
+    .leaflet-container a { color: rgba(255,255,255,0.82) !important; }
+  </style>
+</head>
+
+<body class="page page--map">
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="ClawVision Home">
+        <span aria-hidden="true">
+          <img src="assets/logo.svg" alt="" style="width:30px;height:30px;" />
+        </span>
+        <span>ClawVision</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a class="active" href="map.html">Map</a>
+        <a href="api.html">API Docs</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="map-shell">
+    <div id="map" class="map-canvas" aria-label="Map"></div>
+
+    <aside class="map-panel" id="mapPanel" aria-label="Map controls">
+      <div class="panel-head">
+        <div class="panel-title">LIVE COVERAGE</div>
+        <div id="asOf" class="chip">as-of: -</div>
+      </div>
+
+      <div class="panel-stats">
+        <div class="panelstat">
+          <div class="label">Active nodes</div>
+          <div class="value" id="pActiveNodes">-</div>
+          <div class="sub" id="pActiveNodesSub">/v1/world/stats</div>
+        </div>
+        <div class="panelstat">
+          <div class="label">Events</div>
+          <div class="value" id="pEvents">-</div>
+          <div class="sub" id="pEventsSub">window total</div>
+        </div>
+        <div class="panelstat">
+          <div class="label">Cells</div>
+          <div class="value" id="pCells">-</div>
+          <div class="sub" id="pCellsSub">unique H3</div>
+        </div>
+        <div class="panelstat">
+          <div class="label">Freshness</div>
+          <div class="value" id="pFresh">-</div>
+          <div class="sub" id="pFreshSub">last frame age</div>
+        </div>
+      </div>
+
+      <label>Relay base URL</label>
+      <input id="relayUrl" placeholder="http://127.0.0.1:8787" />
+
+      <div class="panel-row">
+        <div>
+          <label>Window</label>
+          <select id="hours">
+            <option value="1">Last 1h</option>
+            <option value="6">Last 6h</option>
+            <option value="24" selected>Last 24h</option>
+            <option value="168">Last 7d</option>
+          </select>
+        </div>
+        <div>
+          <label>H3 res</label>
+          <select id="h3Res">
+            <option value="8">8</option>
+            <option value="9" selected>9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel-row">
+        <div>
+          <label>Scale</label>
+          <select id="scale">
+            <option value="log" selected>Log</option>
+            <option value="linear">Linear</option>
+          </select>
+        </div>
+        <div>
+          <label>Min count</label>
+          <input id="minCount" type="number" min="1" step="1" value="1" />
+        </div>
+      </div>
+
+      <div class="panel-row">
+        <div>
+          <label>Auto refresh</label>
+          <select id="autoEvery">
+            <option value="0" selected>Off</option>
+            <option value="10">Every 10s</option>
+            <option value="30">Every 30s</option>
+            <option value="60">Every 60s</option>
+          </select>
+        </div>
+        <div>
+          <label>Fit to data</label>
+          <select id="fitMode">
+            <option value="first" selected>On first load</option>
+            <option value="always">Always</option>
+            <option value="never">Never</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel-actions">
+        <button id="btnLoad" class="btn primary small">Load</button>
+        <button id="btnFit" class="btn small">Fit</button>
+        <button id="btnClear" class="btn small">Clear</button>
+      </div>
+
+      <div style="margin-top:10px; color:rgba(255,255,255,0.62); font-size:12px;">
+        Tip: click a hex cell to open details (latest frames).
+      </div>
+    </aside>
+
+    <aside class="detail-drawer" id="detailDrawer" aria-label="Cell details">
+      <div class="drawer-head">
+        <h2 id="cellTitle">Cell</h2>
+        <button class="drawer-close" id="drawerClose">Close</button>
+      </div>
+      <div class="drawer-meta" id="cellMeta">Select a cell to inspect events.</div>
+      <div class="thumb" id="thumbWrap" style="display:none;">
+        <img id="cellThumb" alt="Latest frame thumbnail" />
+      </div>
+      <div class="drawer-actions">
+        <a class="btn primary small" id="cellQueryLink" href="api.html">Query this cell via API</a>
+        <a class="btn small" id="cellEventsLink" href="#" target="_blank" rel="noreferrer">Open /world/events</a>
+      </div>
+    </aside>
+
+    <div class="watermark">ClawVision</div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/h3-js@4.1.0/dist/h3-js.umd.js"></script>
+  <script src="js/map.js"></script>
+</body>
+</html>

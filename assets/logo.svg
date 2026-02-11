@@ -1,0 +1,26 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ClawVision">
+  <defs>
+    <linearGradient id="g" x1="12" y1="12" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00e5ff"/>
+      <stop offset="1" stop-color="#00ff88"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feColorMatrix in="b" type="matrix" values="
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        0 0 0 0.65 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path d="M60 8 103 32v56l-43 24-43-24V32L60 8Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+  <path d="M60 20 94 39v42L60 100 26 81V39L60 20Z" fill="none" stroke="url(#g)" stroke-width="3" filter="url(#glow)"/>
+  <path d="M24 60c10-16 24-24 36-24s26 8 36 24c-10 16-24 24-36 24S34 76 24 60Z" fill="rgba(0,0,0,0.45)" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+  <circle cx="60" cy="60" r="11" fill="url(#g)"/>
+  <circle cx="60" cy="60" r="4" fill="rgba(0,0,0,0.45)"/>
+</svg>
+

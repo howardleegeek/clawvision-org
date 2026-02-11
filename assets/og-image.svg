@@ -1,0 +1,69 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ClawVision social preview">
+  <defs>
+    <linearGradient id="bg-gradient" x1="600" y1="0" x2="600" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#06060B" />
+      <stop offset="1" stop-color="#0A0A0F" />
+    </linearGradient>
+    <radialGradient id="cyan-glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(230 70) rotate(28) scale(650 430)">
+      <stop stop-color="#00E5FF" stop-opacity="0.28" />
+      <stop offset="1" stop-color="#00E5FF" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="green-glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1005 165) rotate(145) scale(630 420)">
+      <stop stop-color="#00FF88" stop-opacity="0.24" />
+      <stop offset="1" stop-color="#00FF88" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="bottom-glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 700) rotate(180) scale(860 360)">
+      <stop stop-color="#5F87FF" stop-opacity="0.16" />
+      <stop offset="1" stop-color="#5F87FF" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="logo-gradient" x1="12" y1="12" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00E5FF" />
+      <stop offset="1" stop-color="#00FF88" />
+    </linearGradient>
+    <filter id="logo-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feColorMatrix in="b" type="matrix" values="
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        0 0 0 0.68 0" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg-gradient)" />
+  <rect width="1200" height="630" fill="url(#cyan-glow)" />
+  <rect width="1200" height="630" fill="url(#green-glow)" />
+  <rect width="1200" height="630" fill="url(#bottom-glow)" />
+
+  <rect x="76" y="178" width="1048" height="286" rx="22" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.09)" />
+
+  <g transform="translate(72 52)">
+    <g transform="scale(0.52)">
+      <path d="M60 8 103 32v56l-43 24-43-24V32L60 8Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)" stroke-width="2" />
+      <path d="M60 20 94 39v42L60 100 26 81V39L60 20Z" fill="none" stroke="url(#logo-gradient)" stroke-width="3" filter="url(#logo-glow)" />
+      <path d="M24 60c10-16 24-24 36-24s26 8 36 24c-10 16-24 24-36 24S34 76 24 60Z" fill="rgba(0,0,0,0.45)" stroke="rgba(255,255,255,0.14)" stroke-width="2" />
+      <circle cx="60" cy="60" r="11" fill="url(#logo-gradient)" />
+      <circle cx="60" cy="60" r="4" fill="rgba(0,0,0,0.45)" />
+    </g>
+    <text x="86" y="38" fill="#F5FAFF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="36" font-weight="780" letter-spacing="0.25">ClawVision</text>
+  </g>
+
+  <text x="600" y="305" fill="#F8FBFF" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="66" font-weight="820" letter-spacing="-1.2">
+    The World's Largest
+  </text>
+  <text x="600" y="378" fill="#F8FBFF" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="66" font-weight="820" letter-spacing="-1.2">
+    Phone-Powered Vision Network
+  </text>
+
+  <text x="600" y="438" fill="rgba(235,249,255,0.82)" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="31" font-weight="500" letter-spacing="0.15">
+    30,000+ devices · H3 spatial indexing · world.query() API
+  </text>
+
+  <text x="1120" y="580" fill="rgba(192,255,227,0.90)" text-anchor="end" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="33" font-weight="650" letter-spacing="0.3">
+    clawvision.org
+  </text>
+</svg>

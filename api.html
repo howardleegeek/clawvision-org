@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClawVision — API Portal</title>
+  <meta name="description" content="ClawVision API: query coverage heatmaps, drill into events by H3 cell, and fetch frame blobs. Try it now in the interactive playground." />
+
+  <link rel="stylesheet" href="https://unpkg.com/@fontsource/inter@5.0.20/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/@fontsource/jetbrains-mono@5.0.20/index.css">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page page--api">
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="ClawVision Home">
+        <span aria-hidden="true">
+          <img src="assets/logo.svg" alt="" style="width:30px;height:30px;" />
+        </span>
+        <span>ClawVision</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="map.html">Map</a>
+        <a class="active" href="api.html">API Docs</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="api-hero">
+      <div class="container">
+        <div class="badge">Try it now — no signup required</div>
+        <h1>ClawVision API</h1>
+        <p class="section-sub">A tiny surface area to explore the living world model: <span style="font-family: var(--mono);">stats</span> → <span style="font-family: var(--mono);">cells</span> → <span style="font-family: var(--mono);">events</span> → <span style="font-family: var(--mono);">blobs</span>.</p>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container grid-2 reveal">
+        <div class="card">
+          <div class="kicker">Overview</div>
+          <h2 class="section-title" style="margin-top:10px;">Base URL</h2>
+          <p class="section-sub">
+            Production (proxy): <span style="font-family: var(--mono);">https://api.clawvision.org</span><br/>
+            Local relay: <span style="font-family: var(--mono);">http://127.0.0.1:8787</span>
+          </p>
+          <div style="margin-top:12px;">
+            <div class="kicker">Authentication</div>
+            <div class="section-sub" style="margin-top:10px;">
+              Public query endpoints are open in dev. Ingest endpoints use bearer tokens and optional register secrets.
+            </div>
+          </div>
+        </div>
+        <div class="card emph">
+          <div class="kicker">Quick start</div>
+          <h2 class="section-title" style="margin-top:10px;">Fetch coverage heatmap</h2>
+          <div class="codeblock" style="margin-top:12px;">
+            <button class="copy-btn" data-copy="#quickCurl">Copy</button>
+            <pre id="quickCurl">curl "http://127.0.0.1:8787/v1/world/cells?res=9&amp;hours=24&amp;limit=5000"</pre>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
+            <a class="btn primary" href="#playground">Open Playground</a>
+            <a class="btn" href="map.html">View Live Map</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container reveal">
+        <div class="kicker">Endpoints</div>
+        <h2 class="section-title">All 6 endpoints</h2>
+        <div id="endpoints" class="grid-3" style="margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="section" id="playground">
+      <div class="container reveal">
+        <div class="kicker">Interactive Playground</div>
+        <h2 class="section-title">Send real requests, inspect real responses</h2>
+        <div class="api-grid" style="margin-top:14px;">
+          <div class="card api-form">
+            <div class="endpoint">
+              <div>
+                <span class="method get" id="pgMethod">GET</span>
+                <code id="pgPath">/v1/world/stats</code>
+              </div>
+              <button class="btn primary small" id="pgSend">Send</button>
+            </div>
+
+            <label>API base URL</label>
+            <input id="pgBaseUrl" placeholder="http://127.0.0.1:8787" />
+
+            <label>Endpoint</label>
+            <select id="pgEndpoint"></select>
+
+            <div id="pgParams"></div>
+
+            <div id="pgAuth" style="display:none;">
+              <label>Authorization (Bearer)</label>
+              <input id="pgBearer" placeholder="tok_..." />
+            </div>
+
+            <div id="pgRegisterSecret" style="display:none;">
+              <label>x-register-secret (optional)</label>
+              <input id="pgXSecret" placeholder="(optional)" />
+            </div>
+
+            <div id="pgBodyWrap" style="display:none;">
+              <label>JSON body</label>
+              <textarea id="pgBody"></textarea>
+              <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+                <input type="file" id="pgJpegFile" accept="image/jpeg" style="flex:1; padding:10px;" />
+                <button class="btn small" id="pgLoadExample" type="button">Load Example</button>
+              </div>
+              <div style="margin-top:10px; color:rgba(255,255,255,0.62); font-size:12px;">
+                For /v1/events/frame, pick a JPEG to auto-fill <span style="font-family:var(--mono);">jpeg_base64</span>.
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <div class="kicker">Code examples</div>
+              <div class="codeblock" style="margin-top:10px;">
+                <button class="copy-btn" data-copy="#pgCode">Copy</button>
+                <pre id="pgCode"># select an endpoint above</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="resp">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+              <div class="kicker" id="pgStatus">Response</div>
+              <button class="btn small" id="pgCopyResp" type="button">Copy JSON</button>
+            </div>
+            <div id="pgRespWrap" style="margin-top:10px;">
+              <pre id="pgResp">{}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container reveal">
+        <div class="kicker">SDKs &amp; tools</div>
+        <h2 class="section-title">Coming soon</h2>
+        <div class="grid-3" style="margin-top:14px;">
+          <div class="card"><h3>Python SDK</h3><p>Helper client for stats/cells/events with typed responses.</p></div>
+          <div class="card"><h3>JavaScript SDK</h3><p>Browser and Node client with caching and retries.</p></div>
+          <div class="card"><h3>CLI</h3><p>Quickly query cells, fetch thumbnails, and export datasets.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img src="assets/logo.svg" alt="ClawVision logo" style="width:34px; height:34px;" />
+          <div style="font-weight:900;">ClawVision API</div>
+        </div>
+        <div style="margin-top:10px; color: rgba(255,255,255,0.66);">
+          Static docs + live playground. No tracking.
+        </div>
+      </div>
+      <div class="footer-links" aria-label="Footer links">
+        <a href="index.html">Home</a>
+        <a href="map.html">Live Map</a>
+        <a href="https://github.com/oysterlabs" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://x.com/ClawGlasses" target="_blank" rel="noreferrer">@ClawGlasses</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+</body>
+</html>
