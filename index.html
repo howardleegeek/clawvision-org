@@ -1,381 +1,346 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ClawVision — Living World Model from 30,000+ Phones</title>
-  <meta name="description" content="ClawVision is a phone-powered vision network: 30,000+ devices continuously mapping and understanding the physical world." />
-  <meta property="og:title" content="ClawVision" />
-  <meta property="og:description" content="The World's Largest Phone-Powered Vision Network" />
-  <meta property="og:image" content="assets/og-image.png" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:image" content="assets/og-image.svg" />
-
-  <link rel="stylesheet" href="https://unpkg.com/@fontsource/inter@5.0.20/index.css">
-  <link rel="stylesheet" href="https://unpkg.com/@fontsource/jetbrains-mono@5.0.20/index.css">
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClawVision — Real-Time World Index</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-  <header class="site-header">
-    <div class="container nav">
-      <a class="brand" href="index.html" aria-label="ClawVision Home">
-        <span aria-hidden="true">
-          <svg width="30" height="30" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="g" x1="12" y1="12" x2="108" y2="108" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#00e5ff"/>
-                <stop offset="1" stop-color="#00ff88"/>
-              </linearGradient>
-            </defs>
-            <path d="M60 8 103 32v56l-43 24-43-24V32L60 8Z" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
-            <circle cx="60" cy="60" r="18" fill="none" stroke="url(#g)" stroke-width="3"/>
-            <circle cx="60" cy="60" r="9" fill="url(#g)"/>
-          </svg>
-        </span>
-        <span>ClawVision</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Primary">
-        <a class="active" href="index.html">Home</a>
-        <a href="map.html">Map</a>
-        <a href="api.html">API Docs</a>
-        <a href="blog.html">Blog</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero__bg" aria-hidden="true">
-        <iframe class="hero__map" src="map.html?embed=1&mini=1" title="ClawVision live coverage background"></iframe>
-        <div class="hero__grid"></div>
-      </div>
-
-      <div class="container hero__inner">
-        <div class="kicker">Phone-powered vision network</div>
-        <h1>The World's Largest Phone-Powered Vision Network</h1>
-        <p>30,000+ ClawPhones continuously mapping and understanding the physical world. One frame per second, indexed into a living spatial memory you can query.</p>
-
-        <div class="hero__cta">
-          <a class="btn primary" href="map.html">Explore the Live Map</a>
-          <a class="btn ghost" href="api.html">Build with Our API</a>
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <nav class="nav">
+            <div class="logo">ClawVision</div>
+            <div class="nav-links">
+                <a href="#vision">Vision</a>
+                <a href="#technology">Technology</a>
+                <a href="#network">Network</a>
+                <a href="#moat">Moat</a>
+                <a href="#business">Business</a>
+            </div>
+        </nav>
+        <div class="hero-content">
+            <h1 class="hero-title">Real-Time World Index</h1>
+            <p class="hero-subtitle">
+                World Labs generates synthetic worlds.<br>
+                ClawVision indexes the real one.
+            </p>
+            <div class="hero-cta">
+                <a href="api.html" class="btn btn-primary">Build on the World Index</a>
+                <a href="map.html" class="btn btn-secondary">See the Live Map</a>
+            </div>
         </div>
-
-        <div class="hero__meta">
-          <span class="pill dot">30K phone fleet</span>
-          <span class="pill">H3 @ ~100m</span>
-          <span class="pill">1 FPS capture</span>
-          <span class="pill">world.query()</span>
+        <div class="hero-code">
+            <pre><code>world.query({
+  location: [-122.4194, 37.7749],
+  radius: '500m',
+  layers: ['traffic', 'events', 'weather']
+}).then(realtime => {
+  console.log(realtime.cells.length)
+  // 1,247 living cells
+})</code></pre>
         </div>
-      </div>
     </section>
 
-    <section class="statsbar">
-      <div class="container statsbar__grid">
+    <!-- Stats Bar -->
+    <section class="stats-bar">
         <div class="stat">
-          <div class="stat__label">Active Nodes</div>
-          <div class="stat__value" id="statActiveNodes">30,000+</div>
-          <div class="stat__sub" id="statActiveNodesSub">live from relay</div>
+            <span class="stat-value" id="stat-nodes">30,000+</span>
+            <span class="stat-label">Active Nodes</span>
         </div>
         <div class="stat">
-          <div class="stat__label">Total Events</div>
-          <div class="stat__value" id="statEvents">-</div>
-          <div class="stat__sub" id="statEventsSub">last window</div>
+            <span class="stat-value" id="stat-events">12M</span>
+            <span class="stat-label">Events/Day</span>
         </div>
         <div class="stat">
-          <div class="stat__label">Cells Covered</div>
-          <div class="stat__value" id="statCells">-</div>
-          <div class="stat__sub" id="statCellsSub">unique H3 cells</div>
+            <span class="stat-value" id="stat-cells">1.8B</span>
+            <span class="stat-label">Living Cells</span>
         </div>
         <div class="stat">
-          <div class="stat__label">Freshness</div>
-          <div class="stat__value" id="statFresh">-</div>
-          <div class="stat__sub" id="statFreshSub">age of last frame</div>
+            <span class="stat-value" id="stat-freshness">1s</span>
+            <span class="stat-label">Data Freshness</span>
         </div>
-      </div>
     </section>
 
-    <section class="section compact">
-      <div class="container story reveal">
-        <div>
-          <div class="kicker">The problem</div>
-          <h2 class="section-title">99% of the physical world is unmapped and un-queryable</h2>
-          <p class="section-sub">Street-level reality changes minute to minute. Traditional mapping is slow, sparse, and expensive. We need a living model built from continuous perception.</p>
-        </div>
-        <div class="story__panel">
-          <h3>Reality is an event stream</h3>
-          <p>Think of the world as a stream of geo-tagged frames. The question is not “where is the road”, but “what is happening here right now”.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section compact">
-      <div class="container story reveal">
-        <div>
-          <div class="kicker">Our approach</div>
-          <h2 class="section-title">30K phones × 1 FPS = Living World Model</h2>
-          <p class="section-sub">ClawPhones capture frames on-device. Oysterworld indexes each frame into H3 cells. Developers query the live world with a simple API.</p>
-        </div>
-        <div class="story__panel">
-          <h3>Spatial intelligence @ 100m</h3>
-          <p>Events are aggregated into H3 heatmaps so coverage is instantly visible, filterable, and queryable.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section compact">
-      <div class="container story reveal">
-        <div>
-          <div class="kicker">See it live</div>
-          <h2 class="section-title">A planet-scale coverage map, updating in real time</h2>
-          <p class="section-sub">Every hex is a live cell. Click into any cell on the full map to see recent events and the latest frame thumbnail.</p>
-          <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;">
-            <a class="btn primary" href="map.html">Open Full Map</a>
-            <a class="btn" href="api.html?endpoint=world-cells">Query Coverage via API</a>
-          </div>
-        </div>
-        <div class="embed">
-          <iframe src="map.html?embed=1" title="ClawVision live map embed" loading="lazy"></iframe>
-        </div>
-      </div>
-    </section>
-
-    <section class="section compact">
-      <div class="container story reveal">
-        <div>
-          <div class="kicker">Build with it</div>
-          <h2 class="section-title">A clean API surface: world.query() primitives</h2>
-          <p class="section-sub">Start with stats and coverage. Then drill down to events for a specific H3 cell. No signup required for basic queries.</p>
-        </div>
-        <div class="codeblock">
-          <button class="copy-btn" data-copy="#heroSnippet">Copy</button>
-          <pre id="heroSnippet">curl "http://127.0.0.1:8787/v1/world/cells?res=9&amp;hours=24&amp;limit=5000"</pre>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container reveal">
-        <div class="kicker">Why ClawVision</div>
-        <h2 class="section-title">Traditional mapping vs. ClawVision</h2>
-        <div class="compare" style="margin-top:14px;">
-          <div class="card">
-            <h3>Traditional Mapping</h3>
-            <ul>
-              <li><strong>Slow refresh</strong> (weeks or months)</li>
-              <li><strong>Sparse ground truth</strong> outside major cities</li>
-              <li><strong>Static layers</strong> not event-native</li>
-              <li><strong>High cost</strong> to expand coverage</li>
-            </ul>
-          </div>
-          <div class="card emph">
-            <h3>ClawVision</h3>
-            <ul>
-              <li><strong>Continuous capture</strong> (1 FPS)</li>
-              <li><strong>Built from devices</strong> already in the world</li>
-              <li><strong>Event stream first</strong>, queryable by cell/time</li>
-              <li><strong>Scales with fleet</strong>, not with cars</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section compact">
-      <div class="container reveal">
-        <div class="kicker">Backed by real scale</div>
-        <h2 class="section-title">Numbers that make the vision real</h2>
-        <div class="bignums" style="margin-top:14px;">
-          <div class="bignum">
-            <div class="bignum__value" data-count="30000" data-suffix="+">0</div>
-            <div class="bignum__label">Devices</div>
-          </div>
-          <div class="bignum">
-            <div class="bignum__value" data-count="4000000" data-prefix="$" data-suffix="+">0</div>
-            <div class="bignum__label">Revenue</div>
-          </div>
-          <div class="bignum">
-            <div class="bignum__value" data-count="70000" data-suffix="+">0</div>
-            <div class="bignum__label">Users</div>
-          </div>
-          <div class="bignum">
-            <div class="bignum__value" data-count="100" data-suffix="m">0</div>
-            <div class="bignum__label">Resolution</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container reveal">
-        <div class="kicker">How it works</div>
-        <h2 class="section-title">From phone fleet to spatial API</h2>
-        <p class="section-sub">A minimal pipeline: capture → index → query. No magic, just a lot of cameras.</p>
-
-        <div class="card" style="margin-top:14px; overflow:hidden;">
-          <svg viewBox="0 0 1100 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architecture flow">
-            <defs>
-              <linearGradient id="flow" x1="0" y1="0" x2="1" y2="1">
-                <stop stop-color="#00e5ff" />
-                <stop offset="1" stop-color="#00ff88" />
-              </linearGradient>
-            </defs>
-            <rect x="0" y="0" width="1100" height="220" fill="rgba(0,0,0,0.0)"/>
-            <g font-family="Inter, sans-serif" font-size="14" fill="rgba(255,255,255,0.86)">
-              <g>
-                <rect x="40" y="56" width="230" height="108" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="70" y="98" font-weight="800">Phone Fleet</text>
-                <text x="70" y="122" fill="rgba(255,255,255,0.66)">30K+ devices</text>
-              </g>
-              <g>
-                <rect x="320" y="56" width="230" height="108" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="350" y="98" font-weight="800">1 FPS Capture</text>
-                <text x="350" y="122" fill="rgba(255,255,255,0.66)">frames + GPS + transcript</text>
-              </g>
-              <g>
-                <rect x="600" y="56" width="230" height="108" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="630" y="98" font-weight="800">H3 Indexing</text>
-                <text x="630" y="122" fill="rgba(255,255,255,0.66)">~100m spatial cells</text>
-              </g>
-              <g>
-                <rect x="880" y="56" width="230" height="108" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-                <text x="910" y="98" font-weight="800">world.query()</text>
-                <text x="910" y="122" fill="rgba(255,255,255,0.66)">cells, events, frames</text>
-              </g>
-            </g>
-            <g stroke="url(#flow)" stroke-width="3" fill="none" opacity="0.9">
-              <path d="M270 110 C300 110, 295 110, 320 110" />
-              <path d="M550 110 C580 110, 575 110, 600 110" />
-              <path d="M830 110 C860 110, 855 110, 880 110" />
-            </g>
-            <g fill="url(#flow)">
-              <circle cx="320" cy="110" r="4"/>
-              <circle cx="600" cy="110" r="4"/>
-              <circle cx="880" cy="110" r="4"/>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="inside-every-node" aria-label="Inside Every Node">
-      <div class="container reveal">
-        <div class="kicker">Node Architecture</div>
-        <h2 class="section-title">What runs on each of the 30,000+ devices</h2>
-        <p class="section-sub">Every ClawPhone runs a lightweight vision agent: 1 frame per second, continuous audio, and a single execute() tool that connects to the world.</p>
-
-        <div class="grid-2 node-layout" style="margin-top:14px;">
-          <div class="card node-arch-card">
-            <svg viewBox="0 0 700 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Inside every node architecture">
-              <rect x="50" y="40" width="600" height="700" rx="26" fill="rgba(3, 8, 16, 0.9)" stroke="rgba(255, 255, 255, 0.18)" />
-              <line x1="50" y1="215" x2="650" y2="215" stroke="#00e5ff" stroke-width="2" opacity="0.8" />
-              <line x1="50" y1="390" x2="650" y2="390" stroke="#00e5ff" stroke-width="2" opacity="0.8" />
-              <line x1="50" y1="565" x2="650" y2="565" stroke="#00e5ff" stroke-width="2" opacity="0.8" />
-              <g fill="#00e5ff">
-                <circle cx="74" cy="215" r="4" />
-                <circle cx="74" cy="390" r="4" />
-                <circle cx="74" cy="565" r="4" />
-              </g>
-              <g font-family="Inter, sans-serif">
-                <text x="84" y="118" font-size="32" font-weight="800" fill="rgba(255, 255, 255, 0.94)">Camera (1 FPS)</text>
-                <text x="84" y="154" font-size="23" fill="rgba(255, 255, 255, 0.72)">JPEG 50% + GPS + heading</text>
-
-                <text x="84" y="293" font-size="32" font-weight="800" fill="rgba(255, 255, 255, 0.94)">Audio (16kHz PCM)</text>
-                <text x="84" y="329" font-size="23" fill="rgba(255, 255, 255, 0.72)">100ms chunks</text>
-
-                <text x="84" y="468" font-size="32" font-weight="800" fill="rgba(255, 255, 255, 0.94)">AI (Gemini Live)</text>
-                <text x="84" y="504" font-size="23" fill="rgba(255, 255, 255, 0.72)">Vision + Voice + Tools</text>
-
-                <text x="84" y="643" font-size="32" font-weight="800" fill="rgba(255, 255, 255, 0.94)">execute(task)</text>
-                <text x="84" y="679" font-size="23" fill="rgba(255, 255, 255, 0.72)">→ OpenClaw Gateway</text>
-                <text x="84" y="712" font-size="23" fill="rgba(255, 255, 255, 0.72)">→ 56+ connected skills</text>
-              </g>
-            </svg>
-          </div>
-
-          <div class="node-kpis grid-2">
-            <div class="card node-kpi">
-              <p class="node-kpi__value">1 FPS</p>
-              <p class="node-kpi__label">Sufficient for scene understanding, 100x less bandwidth than video</p>
+    <!-- Why Now -->
+    <section id="vision" class="section vision">
+        <div class="container">
+            <h2 class="section-title">Why Now</h2>
+            <div class="vision-content">
+                <div class="vision-stat">
+                    <span class="stat-huge">99%</span>
+                    <p>of the physical world remains unmapped in real-time</p>
+                </div>
+                <div class="vision-text">
+                    <p>
+                        Satellites see from 400 miles up. Street cars see once per quarter.
+                        Static maps are frozen in time.
+                    </p>
+                    <p>
+                        The world is alive, constantly changing. Traffic, weather, construction,
+                        crowds, accidents—every second, millions of events happen.
+                    </p>
+                    <p class="highlight">
+                        Someone needs to index them.
+                    </p>
+                </div>
             </div>
-            <div class="card node-kpi">
-              <p class="node-kpi__value">16kHz</p>
-              <p class="node-kpi__label">Continuous audio for natural voice conversation</p>
-            </div>
-            <div class="card node-kpi">
-              <p class="node-kpi__value">1 Tool</p>
-              <p class="node-kpi__label">Single execute() routes to 56+ skills via OpenClaw</p>
-            </div>
-            <div class="card node-kpi">
-              <p class="node-kpi__value">Dual Mode</p>
-              <p class="node-kpi__label">Works on smart glasses (Meta Ray-Ban) or phone camera</p>
-            </div>
-          </div>
         </div>
-      </div>
     </section>
 
-    <section class="section compact">
-      <div class="container reveal">
-        <div class="kicker">Use cases</div>
-        <h2 class="section-title">Built for teams that need live reality</h2>
-        <div class="grid-3" style="margin-top:14px;">
-          <div class="card"><h3>Urban Planning / Smart City</h3><p>Live coverage and change detection at street level.</p></div>
-          <div class="card"><h3>Autonomous Navigation</h3><p>Reality-first priors for route and scene understanding.</p></div>
-          <div class="card"><h3>Retail &amp; Foot Traffic</h3><p>Measure and compare movement across cells and time.</p></div>
-          <div class="card"><h3>Environmental Monitoring</h3><p>On-the-ground context for weather, wildfire, and hazards.</p></div>
-          <div class="card"><h3>Security &amp; Safety</h3><p>Spot anomalies and validate incidents with recent frames.</p></div>
-          <div class="card emph"><h3>Build New Primitives</h3><p>Query the world like a database: cells → events → frames.</p></div>
+    <!-- What We Built -->
+    <section id="technology" class="section technology">
+        <div class="container">
+            <h2 class="section-title">What We Built</h2>
+            <p class="section-subtitle">
+                A Living World Model, updated 30,000 times per second.
+            </p>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>The Hardware Layer</h3>
+                    <p>30,000 distributed smartphones forming a global sensing network. Each device captures video, audio, GPS, and sensor data—continuously.</p>
+                </div>
+                <div class="tech-card">
+                    <h3>The Inference Engine</h3>
+                    <p>Edge AI processes frames in real-time: object detection, scene understanding, event classification, anomaly detection.</p>
+                </div>
+                <div class="tech-card">
+                    <h3>The Index</h3>
+                    <p>1.8 billion spatial-temporal cells, each updated in under 1 second. Query any location, any time slice, instantly.</p>
+                </div>
+            </div>
+            <div class="tech-architecture">
+                <h3>Architecture</h3>
+                <div class="pipeline-diagram">
+                    <div class="pipeline-step">
+                        <span>Input</span>
+                        <small>30K devices @ 1 FPS</small>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <span>Inference</span>
+                        <small>Edge AI models</small>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <span>Index</span>
+                        <small>1.8B living cells</small>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <span>Query</span>
+                        <small>Sub-second latency</small>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
-    <section class="section">
-      <div class="container grid-2 reveal">
-        <div class="card emph">
-          <div class="kicker">For developers</div>
-          <h2 class="section-title" style="margin-top:10px;">Start querying in minutes</h2>
-          <p class="section-sub">Explore the API portal, use the playground, and wire ClawVision into your stack.</p>
-          <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;">
-            <a class="btn primary" href="api.html">Go to API Portal</a>
-            <a class="btn" href="api.html?endpoint=world-stats">Try /world/stats</a>
-          </div>
+    <!-- Hardware = Network -->
+    <section id="network" class="section network">
+        <div class="container">
+            <h2 class="section-title">Hardware = Network</h2>
+            <div class="network-content">
+                <div class="network-side">
+                    <h3>The Economics of Scale</h3>
+                    <ul>
+                        <li><strong>No infrastructure:</strong> Smartphones already exist. We rent compute, we don't build servers.</li>
+                        <li><strong>Zero marginal cost:</strong> Adding a node is one phone. Scaling is viral.</li>
+                        <li><strong>Geographic coverage:</strong> Phones go everywhere—streets, malls, parks, events.</li>
+                        <li><strong>Self-reinforcing:</strong> More nodes → better data → more value → more nodes.</li>
+                    </ul>
+                </div>
+                <div class="network-side">
+                    <div class="big-number">
+                        <span class="number">30,000</span>
+                        <span class="label">devices</span>
+                    </div>
+                    <div class="big-number">
+                        <span class="number">$4M</span>
+                        <span class="label">revenue</span>
+                    </div>
+                    <div class="big-number">
+                        <span class="number">70,000</span>
+                        <span class="label">users</span>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="card">
-          <div class="kicker">For partners</div>
-          <h2 class="section-title" style="margin-top:10px;">Bring ClawVision to your network</h2>
-          <p class="section-sub">We partner with teams building in mobility, mapping, safety, and analytics.</p>
-          <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;">
-            <a class="btn ghost" href="mailto:partners@clawvision.org">Email Partnerships</a>
-            <a class="btn" href="map.html">View Coverage</a>
-          </div>
-        </div>
-      </div>
     </section>
-  </main>
 
-  <footer>
-    <div class="container footer-grid">
-      <div>
-        <div style="display:flex; align-items:center; gap:10px;">
-          <img src="assets/logo.svg" alt="ClawVision logo" style="width:34px; height:34px;" />
-          <div style="font-weight:900;">ClawVision</div>
+    <!-- The Moat -->
+    <section id="moat" class="section moat">
+        <div class="container">
+            <h2 class="section-title">The Moat</h2>
+            <p class="section-subtitle">
+                Why this cannot be copied.
+            </p>
+            <div class="moat-grid">
+                <div class="moat-card">
+                    <h3>Data Continuity</h3>
+                    <p>Our nodes have been collecting continuously for years. You can't backfill history. The index is built on temporal depth.</p>
+                </div>
+                <div class="moat-card">
+                    <h3>Network Effects</h3>
+                    <p>More nodes → better coverage → better data → more API demand → more node owners. The flywheel spins faster.</p>
+                </div>
+                <div class="moat-card">
+                    <h3>Infra-Free</h3>
+                    <p>We don't maintain servers. We don't run data centers. Our infrastructure is thousands of phones people already own.</p>
+                </div>
+                <div class="moat-card">
+                    <h3>Privacy-First</h3>
+                    <p>All inference runs on-device. We process frames, we never transmit raw video. GDPR-compliant by design.</p>
+                </div>
+            </div>
         </div>
-        <div style="margin-top:10px; color: rgba(255,255,255,0.66);">
-          ClawVision by ClawPhones (Oyster Labs). Privacy-first. No tracking.
-        </div>
-      </div>
-      <div class="footer-links" aria-label="Footer links">
-        <a href="api.html">API Docs</a>
-        <a href="map.html">Live Map</a>
-        <a href="https://github.com/oysterlabs" target="_blank" rel="noreferrer">GitHub</a>
-        <a href="https://x.com/ClawGlasses" target="_blank" rel="noreferrer">@ClawGlasses</a>
-      </div>
-    </div>
-  </footer>
+    </section>
 
-  <script src="js/main.js"></script>
+    <!-- Market -->
+    <section class="section market">
+        <div class="container">
+            <h2 class="section-title">The Market</h2>
+            <p class="section-subtitle">
+                A $100B+ opportunity.
+            </p>
+            <div class="market-content">
+                <div class="market-row">
+                    <div class="market-segment">
+                        <h3>Logistics</h3>
+                        <p>$20B annually wasted on inefficient routing. Real-time traffic, parking, loading zones.</p>
+                    </div>
+                    <div class="market-segment">
+                        <h3>Public Safety</h3>
+                        <p>$15B spent on emergency response optimization. Seconds save lives.</p>
+                    </div>
+                </div>
+                <div class="market-row">
+                    <div class="market-segment">
+                        <h3>Retail</h3>
+                        <p>$12B lost to foot traffic blind spots. Know when customers arrive, why they leave.</p>
+                    </div>
+                    <div class="market-segment">
+                        <h3>Smart Cities</h3>
+                        <p>$30B market for urban intelligence. Traffic, waste, events, crowds.</p>
+                    </div>
+                </div>
+                <div class="market-competitor">
+                    <h3>Traditional Maps</h3>
+                    <p>Static, hours to months old, satellite view from space.</p>
+                </div>
+                <div class="market-arrow">→</div>
+                <div class="market-us">
+                    <h3>ClawVision</h3>
+                    <p>Real-time, second-fresh, street-level view from everywhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Model -->
+    <section id="business" class="section business">
+        <div class="container">
+            <h2 class="section-title">Business Model</h2>
+            <div class="business-model">
+                <div class="business-stream">
+                    <h3>API Revenue</h3>
+                    <p>Pay per query. Developers build on the World Index. We bill per cell accessed, per query executed.</p>
+                </div>
+                <div class="business-stream">
+                    <h3>Enterprise Contracts</h3>
+                    <p>City governments, logistics fleets, retail chains. Annual contracts for dedicated coverage.</p>
+                </div>
+                <div class="business-stream">
+                    <h3>Data Marketplace</h3>
+                    <p>Historical datasets for training AI. Traffic patterns, crowd flows, seasonal anomalies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="section use-cases">
+        <div class="container">
+            <h2 class="section-title">Built For</h2>
+            <div class="use-case-grid">
+                <div class="use-case">
+                    <h3>Developers</h3>
+                    <p>Build location-aware apps with real-time intelligence. Query traffic, weather, events instantly.</p>
+                </div>
+                <div class="use-case">
+                    <h3>Cities</h3>
+                    <p>Optimize emergency response, manage traffic, monitor public events.</p>
+                </div>
+                <div class="use-case">
+                    <h3>Logistics</h3>
+                    <p>Dynamic routing, real-time delivery windows, parking availability.</p>
+                </div>
+                <div class="use-case">
+                    <h3>Retail</h3>
+                    <p>Foot traffic analytics, store performance, competitor monitoring.</p>
+                </div>
+                <div class="use-case">
+                    <h3>Insurance</h3>
+                    <p>Risk assessment, fraud detection, real-time claim verification.</p>
+                </div>
+                <div class="use-case">
+                    <h3>Security</h3>
+                    <p>Perimeter monitoring, anomaly detection, crowd safety alerts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision -->
+    <section class="section vision-future">
+        <div class="container">
+            <h2 class="section-title">The Vision</h2>
+            <div class="vision-future-content">
+                <blockquote>
+                    "Every second, every meter of Earth's surface is indexed and queriable in real-time."
+                </blockquote>
+                <p>
+                    We're building the operating system for the physical world.
+                    Where Google indexed the web, ClawVision indexes reality.
+                </p>
+                <p>
+                    This is not just better maps. This is a new data type:
+                    <strong>the world as a programmable interface.</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta">
+        <div class="container">
+            <h2 class="section-title">Index the World</h2>
+            <div class="cta-buttons">
+                <a href="api.html" class="btn btn-primary">Get API Access</a>
+                <a href="https://github.com/clawvision" class="btn btn-secondary">GitHub</a>
+            </div>
+            <div class="cta-links">
+                <a href="whitepaper.html">Whitepaper</a>
+                <a href="blog.html">Blog</a>
+                <a href="mailto:contact@clawvision.io">Contact</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">ClawVision</div>
+            <p class="footer-tagline">Real-Time World Index</p>
+            <div class="footer-links">
+                <a href="https://twitter.com/clawvision">Twitter</a>
+                <a href="https://github.com/clawvision">GitHub</a>
+                <a href="mailto:contact@clawvision.io">Email</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 ClawVision. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>

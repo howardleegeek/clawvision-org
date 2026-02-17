@@ -1,166 +1,138 @@
-/* Landing page logic: live stats + reveal + counters + copy buttons */
-(function () {
-  const RELAY_DEFAULT = 'http://127.0.0.1:8787';
-
-  function qs(sel) {
-    return document.querySelector(sel);
-  }
-
-  function setText(id, val) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.textContent = val;
-  }
-
-  function formatInt(n) {
-    if (!Number.isFinite(n)) return '-';
-    return n.toLocaleString('en-US');
-  }
-
-  function msToAge(ms) {
-    if (!Number.isFinite(ms) || ms < 0) return '-';
-    const s = Math.floor(ms / 1000);
-    if (s < 60) return `${s}s`;
-    const m = Math.floor(s / 60);
-    if (m < 60) return `${m}m`;
-    const h = Math.floor(m / 60);
-    if (h < 48) return `${h}h`;
-    const d = Math.floor(h / 24);
-    return `${d}d`;
-  }
-
-  async function fetchJson(url, timeoutMs) {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), timeoutMs);
-    try {
-      const resp = await fetch(url, { signal: ctrl.signal });
-      const data = await resp.json().catch(() => null);
-      return { ok: resp.ok && data && data.ok, resp, data };
-    } catch (e) {
-      return { ok: false, error: e };
-    } finally {
-      clearTimeout(t);
-    }
-  }
-
-  async function loadStats() {
-    const url = `${RELAY_DEFAULT}/v1/world/stats?res=9&hours=24`;
-    const r = await fetchJson(url, 1600);
-    if (!r.ok) {
-      // Spec requirement: fallback shows "30,000+"
-      setText('statActiveNodes', '30,000+');
-      setText('statActiveNodesSub', 'fallback');
-      setText('statEvents', '-');
-      setText('statCells', '-');
-      setText('statFresh', '-');
-      return;
-    }
-
-    const d = r.data || {};
-    setText('statActiveNodes', formatInt(d.active_nodes));
-    setText('statActiveNodesSub', `total nodes: ${formatInt(d.nodes_total)}`);
-    setText('statEvents', formatInt(d.events_total));
-    setText('statEventsSub', 'last 24h');
-    setText('statCells', formatInt(d.unique_cells));
-    setText('statCellsSub', `H3 res ${d.res ?? 9}`);
-
-    const lastTs = Date.parse(d?.last_event?.ts || '');
-    if (Number.isFinite(lastTs)) {
-      setText('statFresh', `${msToAge(Date.now() - lastTs)} ago`);
-      setText('statFreshSub', d?.last_event?.id ? `last: ${d.last_event.id}` : 'last event');
-    } else {
-      setText('statFresh', '-');
-      setText('statFreshSub', 'no events');
-    }
-  }
-
-  function setupReveal() {
-    const els = Array.from(document.querySelectorAll('.reveal'));
-    if (!('IntersectionObserver' in window)) {
-      for (const el of els) el.classList.add('is-visible');
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) e.target.classList.add('is-visible');
-        }
-      },
-      { root: null, threshold: 0.14 }
-    );
-    for (const el of els) io.observe(el);
-  }
-
-  function setupCounters() {
-    const nums = Array.from(document.querySelectorAll('[data-count]'));
-    if (!('IntersectionObserver' in window)) return;
-
-    const run = (el) => {
-      const target = Number(el.getAttribute('data-count') || '0');
-      const prefix = el.getAttribute('data-prefix') || '';
-      const suffix = el.getAttribute('data-suffix') || '';
-      const dur = 900;
-      const start = performance.now();
-
-      function step(t) {
-        const p = Math.min(1, (t - start) / dur);
-        const eased = 1 - Math.pow(1 - p, 3);
-        const v = Math.round(target * eased);
-        el.textContent = `${prefix}${v.toLocaleString('en-US')}${suffix}`;
-        if (p < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
+/**
+ * Animates the statistics bar values by incrementing them from 0 to their target values.
+ * Updates node count, events, cells, and freshness metrics with smooth animations.
+ * @returns {void}
+ */
+function animateStats() {
+    const stats = {
+        nodes: { current: 0, target: 30000, suffix: '', id: 'stat-nodes' },
+        events: { current: 0, target: 12, suffix: 'M', id: 'stat-events' },
+        cells: { current: 0, target: 1.8, suffix: 'B', id: 'stat-cells' },
+        freshness: { current: 0, target: 1, suffix: 's', id: 'stat-freshness' }
     };
 
-    const seen = new WeakSet();
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          if (seen.has(e.target)) continue;
-          seen.add(e.target);
-          run(e.target);
+    /**
+     * Formats a number with the appropriate suffix (B for billions, M for millions).
+     * @param {number} num - The number to format
+     * @param {string} suffix - The suffix to append (B, M, or empty)
+     * @returns {string} The formatted number with suffix
+     */
+    function formatNumber(num, suffix) {
+        if (suffix === 'B') {
+            return num.toFixed(1) + suffix;
         }
-      },
-      { threshold: 0.18 }
-    );
-
-    for (const el of nums) io.observe(el);
-  }
-
-  function setupCopyButtons() {
-    const btns = Array.from(document.querySelectorAll('.copy-btn[data-copy]'));
-    for (const btn of btns) {
-      btn.addEventListener('click', async () => {
-        const sel = btn.getAttribute('data-copy');
-        if (!sel) return;
-        const target = document.querySelector(sel);
-        if (!target) return;
-        const txt = target.textContent || '';
-        try {
-          await navigator.clipboard.writeText(txt);
-          const prev = btn.textContent;
-          btn.textContent = 'Copied';
-          setTimeout(() => (btn.textContent = prev), 900);
-        } catch {
-          // ignore
+        if (suffix === 'M') {
+            return num.toLocaleString() + suffix;
         }
-      });
+        return num.toLocaleString() + suffix;
     }
-  }
 
-  async function init() {
-    setupReveal();
-    setupCounters();
-    setupCopyButtons();
-    await loadStats();
-    setInterval(loadStats, 10_000);
-  }
+    /**
+     * Updates a single stat element with animated incrementing values.
+     * @param {Object} stat - The stat object containing id, current, target, and suffix
+     * @returns {void}
+     */
+    function updateStat(stat) {
+        const element = document.getElementById(stat.id);
+        if (!element) return;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
+        const increment = (stat.target - stat.current) / 50;
+        stat.current += increment;
 
+        if (stat.current < stat.target) {
+            element.textContent = formatNumber(Math.floor(stat.current), stat.suffix);
+            requestAnimationFrame(() => updateStat(stat));
+        } else {
+            element.textContent = formatNumber(stat.target, stat.suffix);
+        }
+    }
+
+    // Start animations with slight delay
+    setTimeout(() => {
+        Object.values(stats).forEach(stat => updateStat(stat));
+    }, 500);
+}
+
+/**
+ * Main initialization function that runs when the DOM is ready.
+ * Sets up stat animations, smooth scrolling, scroll animations, and live data simulation.
+ * @returns {void}
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate stats on load
+    animateStats();
+
+    // Smooth scroll for anchor links
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe sections for animation
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+    /**
+     * Simulates live data updates by fluctuating node and event counts periodically.
+     * Updates the stats display every 5 seconds with small random increments.
+     * @returns {void}
+     */
+    function simulateLiveData() {
+        const nodesElement = document.getElementById('stat-nodes');
+        const eventsElement = document.getElementById('stat-events');
+
+        if (nodesElement && eventsElement) {
+            // Add small random fluctuations to simulate live data
+            setInterval(() => {
+                const currentNodes = parseInt(nodesElement.textContent.replace(/,/g, ''));
+                const newNodes = currentNodes + Math.floor(Math.random() * 3);
+                nodesElement.textContent = newNodes.toLocaleString() + '+';
+
+                const currentEvents = parseInt(eventsElement.textContent.replace(/M/g, ''));
+                const newEvents = currentEvents + Math.random() * 0.1;
+                eventsElement.textContent = newEvents.toFixed(1) + 'M';
+            }, 5000);
+        }
+    }
+
+    simulateLiveData();
+});
+
+// Utility function to check if element is in viewport
+function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
