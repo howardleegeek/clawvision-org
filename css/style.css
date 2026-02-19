@@ -402,6 +402,79 @@ body {
     text-align: center;
 }
 
+.comparison-table {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.comparison-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+}
+
+.comparison-header span {
+    padding: 1.25rem;
+    font-weight: 600;
+}
+
+.comp-label {
+    font-size: 1rem;
+}
+
+.comp-traditional {
+    color: var(--text-secondary);
+}
+
+.comp-us {
+    color: var(--accent);
+}
+
+.comparison-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+}
+
+.comparison-row:last-child {
+    border-bottom: none;
+}
+
+.comparison-row span {
+    padding: 1rem 1.25rem;
+}
+
+.comp-feature {
+    text-align: left;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.comp-value {
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.comp-value.comp-traditional {
+    color: var(--text-secondary);
+}
+
+.comp-value.comp-us {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.market-segments {
+    margin-top: 2rem;
+}
+
 .market-row {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClawVision — Real-Time World Index</title>
+    <title>ClawVision — Reality, Indexed</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,25 +20,31 @@
             </div>
         </nav>
         <div class="hero-content">
-            <h1 class="hero-title">Real-Time World Index</h1>
+            <h1 class="hero-title">Reality, Indexed</h1>
             <p class="hero-subtitle">
-                World Labs generates synthetic worlds.<br>
-                ClawVision indexes the real one.
+                The world, live.
             </p>
             <div class="hero-cta">
-                <a href="api.html" class="btn btn-primary">Build on the World Index</a>
-                <a href="map.html" class="btn btn-secondary">See the Live Map</a>
+                <a href="api.html" class="btn btn-primary">Get API Key →</a>
+                <a href="map.html" class="btn btn-secondary">Explore the Map</a>
             </div>
         </div>
         <div class="hero-code">
-            <pre><code>world.query({
-  location: [-122.4194, 37.7749],
-  radius: '500m',
-  layers: ['traffic', 'events', 'weather']
-}).then(realtime => {
-  console.log(realtime.cells.length)
-  // 1,247 living cells
-})</code></pre>
+            <pre><code><span class="code-keyword">import</span> { World } <span class="code-keyword">from</span> <span class="code-string">'@clawvision/sdk'</span>
+
+<span class="code-keyword">const</span> world = <span class="code-keyword">new</span> World({ 
+  apiKey: <span class="code-string">'cv_live_...'</span> 
+})
+
+<span class="code-comment">// Times Square, now</span>
+<span class="code-keyword">const</span> data = <span class="code-keyword">await</span> world.query({
+  location: [-73.9855, 40.7580],
+  radius: <span class="code-string">'200m'</span>,
+  layers: [<span class="code-string">'crowd_density'</span>, <span class="code-string">'traffic'</span>, <span class="code-string">'events'</span>]
+})
+
+<span class="code-keyword">console</span>.log(data)
+// { cells: 847, avg_density: 3.2, events: [...] }</code></pre>
         </div>
     </section>
 
@@ -65,23 +71,19 @@
     <!-- Why Now -->
     <section id="vision" class="section vision">
         <div class="container">
-            <h2 class="section-title">Why Now</h2>
+            <h2 class="section-title">The Gap</h2>
             <div class="vision-content">
                 <div class="vision-stat">
-                    <span class="stat-huge">99%</span>
-                    <p>of the physical world remains unmapped in real-time</p>
+                    <span class="stat-huge">99.7%</span>
+                    <p>of physical reality is still invisible.</p>
                 </div>
                 <div class="vision-text">
                     <p>
-                        Satellites see from 400 miles up. Street cars see once per quarter.
-                        Static maps are frozen in time.
-                    </p>
-                    <p>
-                        The world is alive, constantly changing. Traffic, weather, construction,
-                        crowds, accidents—every second, millions of events happen.
+                        Satellites orbit at 400 miles—capturing a city once every few months.
+                        Street cameras see, but don't understand.
                     </p>
                     <p class="highlight">
-                        Someone needs to index them.
+                        Reality moves every second. Now we index it live.
                     </p>
                 </div>
             </div>
@@ -91,22 +93,22 @@
     <!-- What We Built -->
     <section id="technology" class="section technology">
         <div class="container">
-            <h2 class="section-title">What We Built</h2>
+            <h2 class="section-title">The System</h2>
             <p class="section-subtitle">
-                A Living World Model, updated 30,000 times per second.
+                A living world model. 30,000 updates per second.
             </p>
             <div class="tech-grid">
                 <div class="tech-card">
-                    <h3>The Hardware Layer</h3>
-                    <p>30,000 distributed smartphones forming a global sensing network. Each device captures video, audio, GPS, and sensor data—continuously.</p>
+                    <h3>Sensor Network</h3>
+                    <p>30,000 smartphones forming a global sensing mesh. Video, audio, GPS, sensors—continuous.</p>
                 </div>
                 <div class="tech-card">
-                    <h3>The Inference Engine</h3>
-                    <p>Edge AI processes frames in real-time: object detection, scene understanding, event classification, anomaly detection.</p>
+                    <h3>Edge Inference</h3>
+                    <p>AI runs on-device: detection, classification, anomaly—in real-time.</p>
                 </div>
                 <div class="tech-card">
                     <h3>The Index</h3>
-                    <p>1.8 billion spatial-temporal cells, each updated in under 1 second. Query any location, any time slice, instantly.</p>
+                    <p>1.8 billion spatial-temporal cells, updated in under 1 second. Query instantly.</p>
                 </div>
             </div>
             <div class="tech-architecture">
@@ -139,14 +141,14 @@
     <!-- Hardware = Network -->
     <section id="network" class="section network">
         <div class="container">
-            <h2 class="section-title">Hardware = Network</h2>
+            <h2 class="section-title">The Network</h2>
             <div class="network-content">
                 <div class="network-side">
-                    <h3>The Economics of Scale</h3>
+                    <h3>Network Economics</h3>
                     <ul>
-                        <li><strong>No infrastructure:</strong> Smartphones already exist. We rent compute, we don't build servers.</li>
-                        <li><strong>Zero marginal cost:</strong> Adding a node is one phone. Scaling is viral.</li>
-                        <li><strong>Geographic coverage:</strong> Phones go everywhere—streets, malls, parks, events.</li>
+                        <li><strong>No infrastructure:</strong> Smartphones already exist. We rent compute, not build servers.</li>
+                        <li><strong>Zero marginal cost:</strong> One phone per node. Viral scaling.</li>
+                        <li><strong>Universal coverage:</strong> Phones go everywhere—streets, malls, parks, events.</li>
                         <li><strong>Self-reinforcing:</strong> More nodes → better data → more value → more nodes.</li>
                     </ul>
                 </div>
@@ -177,20 +179,20 @@
             </p>
             <div class="moat-grid">
                 <div class="moat-card">
-                    <h3>Data Continuity</h3>
-                    <p>Our nodes have been collecting continuously for years. You can't backfill history. The index is built on temporal depth.</p>
+                    <h3>Temporal Depth</h3>
+                    <p>We've been collecting continuously for years. You can't backfill history. The index is built on time.</p>
                 </div>
                 <div class="moat-card">
                     <h3>Network Effects</h3>
-                    <p>More nodes → better coverage → better data → more API demand → more node owners. The flywheel spins faster.</p>
+                    <p>More nodes → better coverage → better data → more demand → more nodes. The flywheel accelerates.</p>
                 </div>
                 <div class="moat-card">
                     <h3>Infra-Free</h3>
-                    <p>We don't maintain servers. We don't run data centers. Our infrastructure is thousands of phones people already own.</p>
+                    <p>No servers. No data centers. Our infrastructure is thousands of phones people already own.</p>
                 </div>
                 <div class="moat-card">
                     <h3>Privacy-First</h3>
-                    <p>All inference runs on-device. We process frames, we never transmit raw video. GDPR-compliant by design.</p>
+                    <p>All inference runs on-device. We process frames, never raw video. GDPR-compliant by design.</p>
                 </div>
             </div>
         </div>
@@ -204,34 +206,54 @@
                 A $100B+ opportunity.
             </p>
             <div class="market-content">
-                <div class="market-row">
-                    <div class="market-segment">
-                        <h3>Logistics</h3>
-                        <p>$20B annually wasted on inefficient routing. Real-time traffic, parking, loading zones.</p>
+                <div class="comparison-table">
+                    <div class="comparison-header">
+                        <span></span>
+                        <span class="comp-label comp-traditional">Traditional Maps</span>
+                        <span class="comp-label comp-us">ClawVision</span>
                     </div>
-                    <div class="market-segment">
-                        <h3>Public Safety</h3>
-                        <p>$15B spent on emergency response optimization. Seconds save lives.</p>
+                    <div class="comparison-row">
+                        <span class="comp-feature">Freshness</span>
+                        <span class="comp-value comp-traditional">Hours → Months</span>
+                        <span class="comp-value comp-us">Real-time</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comp-feature">View</span>
+                        <span class="comp-value comp-traditional">Satellite (400mi)</span>
+                        <span class="comp-value comp-us">Street-level</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comp-feature">Coverage</span>
+                        <span class="comp-value comp-traditional">Roads only</span>
+                        <span class="comp-value comp-us">Every location</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comp-feature">Events</span>
+                        <span class="comp-value comp-traditional">Static POIs</span>
+                        <span class="comp-value comp-us">Live incidents</span>
                     </div>
                 </div>
-                <div class="market-row">
-                    <div class="market-segment">
-                        <h3>Retail</h3>
-                        <p>$12B lost to foot traffic blind spots. Know when customers arrive, why they leave.</p>
+                <div class="market-segments">
+                    <div class="market-row">
+                        <div class="market-segment">
+                            <h3>Logistics</h3>
+                            <p>$20B wasted on inefficient routing annually.</p>
+                        </div>
+                        <div class="market-segment">
+                            <h3>Public Safety</h3>
+                            <p>Seconds save lives in emergency response.</p>
+                        </div>
                     </div>
-                    <div class="market-segment">
-                        <h3>Smart Cities</h3>
-                        <p>$30B market for urban intelligence. Traffic, waste, events, crowds.</p>
+                    <div class="market-row">
+                        <div class="market-segment">
+                            <h3>Retail</h3>
+                            <p>$12B lost to foot traffic blind spots.</p>
+                        </div>
+                        <div class="market-segment">
+                            <h3>Smart Cities</h3>
+                            <p>$30B market for urban intelligence.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="market-competitor">
-                    <h3>Traditional Maps</h3>
-                    <p>Static, hours to months old, satellite view from space.</p>
-                </div>
-                <div class="market-arrow">→</div>
-                <div class="market-us">
-                    <h3>ClawVision</h3>
-                    <p>Real-time, second-fresh, street-level view from everywhere.</p>
                 </div>
             </div>
         </div>
@@ -240,19 +262,19 @@
     <!-- Business Model -->
     <section id="business" class="section business">
         <div class="container">
-            <h2 class="section-title">Business Model</h2>
+            <h2 class="section-title">Revenue</h2>
             <div class="business-model">
                 <div class="business-stream">
-                    <h3>API Revenue</h3>
-                    <p>Pay per query. Developers build on the World Index. We bill per cell accessed, per query executed.</p>
+                    <h3>API</h3>
+                    <p>Pay per query. The World Index as a service.</p>
                 </div>
                 <div class="business-stream">
-                    <h3>Enterprise Contracts</h3>
-                    <p>City governments, logistics fleets, retail chains. Annual contracts for dedicated coverage.</p>
+                    <h3>Enterprise</h3>
+                    <p>Cities, logistics fleets, retail chains. Annual contracts.</p>
                 </div>
                 <div class="business-stream">
-                    <h3>Data Marketplace</h3>
-                    <p>Historical datasets for training AI. Traffic patterns, crowd flows, seasonal anomalies.</p>
+                    <h3>Data</h3>
+                    <p>Historical datasets for AI training. Traffic, crowds, events.</p>
                 </div>
             </div>
         </div>
@@ -265,27 +287,27 @@
             <div class="use-case-grid">
                 <div class="use-case">
                     <h3>Developers</h3>
-                    <p>Build location-aware apps with real-time intelligence. Query traffic, weather, events instantly.</p>
+                    <p>Build location-aware apps with real-time intelligence.</p>
                 </div>
                 <div class="use-case">
                     <h3>Cities</h3>
-                    <p>Optimize emergency response, manage traffic, monitor public events.</p>
+                    <p>Emergency response, traffic management, event monitoring.</p>
                 </div>
                 <div class="use-case">
                     <h3>Logistics</h3>
-                    <p>Dynamic routing, real-time delivery windows, parking availability.</p>
+                    <p>Dynamic routing, real-time delivery, parking availability.</p>
                 </div>
                 <div class="use-case">
                     <h3>Retail</h3>
-                    <p>Foot traffic analytics, store performance, competitor monitoring.</p>
+                    <p>Foot traffic analytics, store performance, competitor insights.</p>
                 </div>
                 <div class="use-case">
                     <h3>Insurance</h3>
-                    <p>Risk assessment, fraud detection, real-time claim verification.</p>
+                    <p>Risk assessment, fraud detection, claim verification.</p>
                 </div>
                 <div class="use-case">
                     <h3>Security</h3>
-                    <p>Perimeter monitoring, anomaly detection, crowd safety alerts.</p>
+                    <p>Perimeter monitoring, anomaly detection, crowd safety.</p>
                 </div>
             </div>
         </div>
@@ -297,15 +319,13 @@
             <h2 class="section-title">The Vision</h2>
             <div class="vision-future-content">
                 <blockquote>
-                    "Every second, every meter of Earth's surface is indexed and queriable in real-time."
+                    "Reality, indexed."
                 </blockquote>
                 <p>
-                    We're building the operating system for the physical world.
-                    Where Google indexed the web, ClawVision indexes reality.
+                    The operating system for the physical world.
                 </p>
                 <p>
-                    This is not just better maps. This is a new data type:
-                    <strong>the world as a programmable interface.</strong>
+                    <strong>Google indexed the web.<br>We index reality.</strong>
                 </p>
             </div>
         </div>
@@ -314,10 +334,11 @@
     <!-- CTA -->
     <section class="section cta">
         <div class="container">
-            <h2 class="section-title">Index the World</h2>
+            <h2 class="section-title">The Index Is Live</h2>
+            <p class="section-subtitle">Start building.</p>
             <div class="cta-buttons">
-                <a href="api.html" class="btn btn-primary">Get API Access</a>
-                <a href="https://github.com/clawvision" class="btn btn-secondary">GitHub</a>
+                <a href="api.html" class="btn btn-primary">Get API Key →</a>
+                <a href="map.html" class="btn btn-secondary">Explore the Map</a>
             </div>
             <div class="cta-links">
                 <a href="whitepaper.html">Whitepaper</a>
@@ -331,7 +352,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-logo">ClawVision</div>
-            <p class="footer-tagline">Real-Time World Index</p>
+            <p class="footer-tagline">Reality, Indexed</p>
             <div class="footer-links">
                 <a href="https://twitter.com/clawvision">Twitter</a>
                 <a href="https://github.com/clawvision">GitHub</a>
